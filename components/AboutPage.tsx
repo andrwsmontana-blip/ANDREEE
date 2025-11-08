@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Target, Eye, Gem, Users, BookOpen, Send, RefreshCw, CheckCircle } from 'lucide-react';
+import { Target, Eye, Gem, Users, BookOpen, Send, RefreshCw } from 'lucide-react';
+import { useToast } from '../../contexts/ToastContext';
 
 const AboutPage: React.FC = () => {
   return (
@@ -61,7 +62,7 @@ const PurposeItem: React.FC<{ icon: React.ReactNode; title: string; description:
 const ContactForm: React.FC = () => {
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [isLoading, setIsLoading] = useState(false);
-    const [isSuccess, setIsSuccess] = useState(false);
+    const { addToast } = useToast();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -73,9 +74,12 @@ const ContactForm: React.FC = () => {
         // Simulate API call
         setTimeout(() => {
             setIsLoading(false);
-            setIsSuccess(true);
+            addToast({
+                type: 'success',
+                title: '¡Mensaje Enviado!',
+                message: 'Tu consulta ha sido enviada a RRHH. Te responderemos pronto.',
+            });
             setFormData({ name: '', email: '', subject: '', message: '' });
-            setTimeout(() => setIsSuccess(false), 5000); // Reset success message after 5 seconds
         }, 1500);
     };
 
@@ -83,39 +87,33 @@ const ContactForm: React.FC = () => {
         <div className="bg-gray-800 p-8 rounded-xl shadow-md">
             <h2 className="text-3xl font-bold text-white mb-2">Contacto con RRHH</h2>
             <p className="text-gray-400 mb-6">¿Tienes alguna pregunta? Envíanos un mensaje y te responderemos a la brevedad.</p>
-            {isSuccess ? (
-                <div className="bg-green-900/50 border border-green-700 text-green-200 px-4 py-3 rounded-lg flex items-center" role="alert">
-                    <CheckCircle className="h-5 w-5 mr-3" />
-                    <span className="block sm:inline">¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.</span>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
+                        <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 focus:ring-red-500 focus:border-red-500" required />
+                    </div>
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                        <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 focus:ring-red-500 focus:border-red-500" required />
+                    </div>
                 </div>
-            ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
-                        <div>
-                            <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
-                            <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 focus:ring-red-500 focus:border-red-500" required />
-                        </div>
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email</label>
-                            <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 focus:ring-red-500 focus:border-red-500" required />
-                        </div>
-                    </div>
-                    <div>
-                        <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1">Asunto</label>
-                        <input type="text" name="subject" id="subject" value={formData.subject} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 focus:ring-red-500 focus:border-red-500" required />
-                    </div>
-                    <div>
-                        <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">Mensaje</label>
-                        <textarea name="message" id="message" rows={4} value={formData.message} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 focus:ring-red-500 focus:border-red-500" required></textarea>
-                    </div>
-                    <div className="text-right">
-                        <button type="submit" disabled={isLoading} className="inline-flex items-center justify-center gap-2 bg-red-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-900 disabled:bg-gray-500 transition-colors">
-                            {isLoading ? <RefreshCw className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
-                            <span>{isLoading ? 'Enviando...' : 'Enviar Mensaje'}</span>
-                        </button>
-                    </div>
-                </form>
-            )}
+                <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-1">Asunto</label>
+                    <input type="text" name="subject" id="subject" value={formData.subject} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 focus:ring-red-500 focus:border-red-500" required />
+                </div>
+                <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">Mensaje</label>
+                    <textarea name="message" id="message" rows={4} value={formData.message} onChange={handleChange} className="w-full bg-gray-700 border border-gray-600 rounded-lg p-2.5 focus:ring-red-500 focus:border-red-500" required></textarea>
+                </div>
+                <div className="text-right">
+                    <button type="submit" disabled={isLoading} className="inline-flex items-center justify-center gap-2 bg-red-800 text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-900 disabled:bg-gray-500 transition-colors">
+                        {isLoading ? <RefreshCw className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
+                        <span>{isLoading ? 'Enviando...' : 'Enviar Mensaje'}</span>
+                    </button>
+                </div>
+            </form>
         </div>
     );
 };

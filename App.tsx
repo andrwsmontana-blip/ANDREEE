@@ -14,6 +14,8 @@ import StrategicAnalysisPage from './components/pages/StrategicAnalysisPage';
 import PreselectionPage from './components/pages/PreselectionPage';
 import ManualsPage from './components/pages/ManualsPage';
 import PayrollPage from './components/pages/PayrollPage';
+import { ToastProvider } from './contexts/ToastContext';
+import ToastContainer from './components/common/ToastContainer';
 
 
 const App: React.FC = () => {
@@ -156,70 +158,74 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-100 font-sans">
-      {isTutorialActive && (
-        <Tutorial
-          stepIndex={tutorialStep}
-          onNext={() => goToStep(tutorialStep + 1)}
-          onPrev={() => goToStep(tutorialStep - 1)}
-          onClose={closeTutorial}
-        />
-      )}
-    
-      <aside className={`bg-gray-800 border-r border-gray-700 p-4 flex flex-col justify-between transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
-        <div>
-          <div className={`flex items-center space-x-2 mb-8 p-2 ${isSidebarCollapsed ? 'justify-center' : ''}`}>
-            <Building className="h-8 w-8 text-red-500 flex-shrink-0" />
-            {!isSidebarCollapsed && <h1 className="text-xl font-bold text-white whitespace-nowrap">Industrias MGP</h1>}
-          </div>
-          <nav className="space-y-2">
-            <NavItem page="home" label="Página de Inicio" icon={<Home className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
-
-            <NavItem page="onboarding.identity" label="Presentación Organizacional" icon={<Users className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
-            <NavItem page="onboarding.induction" label="Inducción al Personal" icon={<ClipboardList className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
-            <NavItem page="operations.training" label="Capacitación y Desarrollo" icon={<GraduationCap className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
-            <NavItem page="hr.preselection" label="Pre selección y Selección" icon={<UserSearch className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
-            <NavItem page="hr.manuals" label="Manual de Funciones" icon={<BookUser className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
-            <NavItem page="hr.payroll" label="Vinculación y Nómina" icon={<Banknote className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
-            <NavItem page="operations.safety" label="SST (Seguridad)" icon={<Shield className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
-
-            <CollapsibleNavItem name="ai" title="Herramientas IA" icon={<Sparkles className="h-5 w-5" />} isCollapsed={isSidebarCollapsed}>
-                <NavItem page="ai.image" label="Editor de Imágenes" icon={<ImageIcon className="h-5 w-5" />} isSubItem isCollapsed={isSidebarCollapsed} />
-                <NavItem page="ai.video" label="Análisis de Video" icon={<Film className="h-5 w-5" />} isSubItem isCollapsed={isSidebarCollapsed} />
-                <NavItem page="ai.strategy" label="Análisis Estratégico" icon={<BrainCircuit className="h-5 w-5" />} isSubItem isCollapsed={isSidebarCollapsed} />
-            </CollapsibleNavItem>
-            
-          </nav>
-        </div>
-        <div>
-            <button
-              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-              className="flex items-center justify-center space-x-3 p-3 w-full text-left rounded-lg transition-colors text-gray-300 hover:bg-gray-700"
-            >
-              <ChevronsLeft className={`h-6 w-6 transition-transform ${isSidebarCollapsed ? 'rotate-180' : ''}`} />
-               {!isSidebarCollapsed && <span className="font-medium text-sm whitespace-nowrap">Cerrar Menú</span>}
-            </button>
-            <div className={`text-center text-xs text-gray-400 mt-4 transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
-                <p>&copy; 2024 Industrias MGP</p>
+    <ToastProvider>
+      <div className="flex h-screen bg-gray-900 text-gray-100 font-sans">
+        {isTutorialActive && (
+          <Tutorial
+            stepIndex={tutorialStep}
+            onNext={() => goToStep(tutorialStep + 1)}
+            onPrev={() => goToStep(tutorialStep - 1)}
+            onClose={closeTutorial}
+          />
+        )}
+      
+        <aside className={`bg-gray-800 border-r border-gray-700 p-4 flex flex-col justify-between transition-all duration-300 ${isSidebarCollapsed ? 'w-20' : 'w-64'}`}>
+          <div>
+            <div className={`flex items-center space-x-2 mb-8 p-2 ${isSidebarCollapsed ? 'justify-center' : ''}`}>
+              <Building className="h-8 w-8 text-red-500 flex-shrink-0" />
+              {!isSidebarCollapsed && <h1 className="text-xl font-bold text-white whitespace-nowrap">Industrias MGP</h1>}
             </div>
+            <nav className="space-y-2">
+              <NavItem page="home" label="Página de Inicio" icon={<Home className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
+
+              <NavItem page="onboarding.identity" label="Presentación Organizacional" icon={<Users className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem page="onboarding.induction" label="Inducción al Personal" icon={<ClipboardList className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem page="operations.training" label="Capacitación y Desarrollo" icon={<GraduationCap className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem page="hr.preselection" label="Pre selección y Selección" icon={<UserSearch className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem page="hr.manuals" label="Manual de Funciones" icon={<BookUser className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem page="hr.payroll" label="Vinculación y Nómina" icon={<Banknote className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
+              <NavItem page="operations.safety" label="SST (Seguridad)" icon={<Shield className="h-5 w-5" />} isCollapsed={isSidebarCollapsed} />
+
+              <CollapsibleNavItem name="ai" title="Herramientas IA" icon={<Sparkles className="h-5 w-5" />} isCollapsed={isSidebarCollapsed}>
+                  <NavItem page="ai.image" label="Editor de Imágenes" icon={<ImageIcon className="h-5 w-5" />} isSubItem isCollapsed={isSidebarCollapsed} />
+                  <NavItem page="ai.video" label="Análisis de Video" icon={<Film className="h-5 w-5" />} isSubItem isCollapsed={isSidebarCollapsed} />
+                  <NavItem page="ai.strategy" label="Análisis Estratégico" icon={<BrainCircuit className="h-5 w-5" />} isSubItem isCollapsed={isSidebarCollapsed} />
+              </CollapsibleNavItem>
+              
+            </nav>
+          </div>
+          <div>
+              <button
+                onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                className="flex items-center justify-center space-x-3 p-3 w-full text-left rounded-lg transition-colors text-gray-300 hover:bg-gray-700"
+              >
+                <ChevronsLeft className={`h-6 w-6 transition-transform ${isSidebarCollapsed ? 'rotate-180' : ''}`} />
+                 {!isSidebarCollapsed && <span className="font-medium text-sm whitespace-nowrap">Cerrar Menú</span>}
+              </button>
+              <div className={`text-center text-xs text-gray-400 mt-4 transition-opacity duration-300 ${isSidebarCollapsed ? 'opacity-0' : 'opacity-100'}`}>
+                  <p>&copy; 2024 Industrias MGP</p>
+              </div>
+          </div>
+        </aside>
+
+        <main className="flex-1 overflow-y-auto p-6 lg:p-10">
+          {renderPage()}
+        </main>
+        
+        <ToastContainer />
+
+        <div className="fixed bottom-6 right-6 z-40">
+          {isChatOpen && <Chatbot onClose={() => setChatOpen(false)} />}
+          <button
+            onClick={() => setChatOpen(!isChatOpen)}
+            className="bg-red-800 text-white p-4 rounded-full shadow-lg hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-transform transform hover:scale-110"
+            aria-label="Open chat"
+          >
+            <Bot className="h-8 w-8" />
+          </button>
         </div>
-      </aside>
-
-      <main className="flex-1 overflow-y-auto p-6 lg:p-10">
-        {renderPage()}
-      </main>
-
-      <div className="fixed bottom-6 right-6 z-40">
-        {isChatOpen && <Chatbot onClose={() => setChatOpen(false)} />}
-        <button
-          onClick={() => setChatOpen(!isChatOpen)}
-          className="bg-red-800 text-white p-4 rounded-full shadow-lg hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-transform transform hover:scale-110"
-          aria-label="Open chat"
-        >
-          <Bot className="h-8 w-8" />
-        </button>
       </div>
-    </div>
+    </ToastProvider>
   );
 };
 
