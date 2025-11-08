@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Industrias MGP Onboarding Portal",
+  "description": "A comprehensive onboarding portal for new employees at Industrias MGP, featuring company information, HR processes, training tools, and integrated AI-powered features for an enhanced experience.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
